@@ -13,7 +13,8 @@ class SwiftmailerController extends Controller
      */
     public function index()
     {
-        //
+        // $users = User::all();
+        // return view('group.create', ['group' => new Group(), 'users' => $users]);
     }
 
     /**
@@ -23,7 +24,7 @@ class SwiftmailerController extends Controller
      */
     public function create()
     {
-        //
+        return view('smtp.create');
     }
 
     /**
