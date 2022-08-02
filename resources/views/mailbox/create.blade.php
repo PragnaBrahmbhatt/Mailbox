@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-12">
-                <h1>{{ $smtp->id == null ? 'Create' : 'Update' }} Smtp</h1>
+                <h1>{{ $mailbox->id == null ? 'Create' : 'Update' }} Smtp</h1>
             </div>
         </div>
     </div>
@@ -17,13 +17,13 @@
 @section('content-body')
     <div class="clearfix"></div>
     <div class="card">
-        <form action="{{ $smtp->id == null ?  route('smtp.store') : route('smtp.update', ['smtp' => $smtp->id]) }}" method="POST" id="smtpForm">
+        <form action="{{ $mailbox->id == null ?  route('mailbox.store') : route('mailbox.update', ['mailbox' => $mailbox->id]) }}" method="POST" id="mailboxForm">
             <div class="card-body">
                 @csrf
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="mailer_id">Mailer ID</label>
-                        <input class="form-control @error('mailer_id') is-invalid @enderror" name="mailer_id" type="text" value="{{ old('mailer_id', $smtp->mailer_id) }}">
+                        <input class="form-control @error('mailer_id') is-invalid @enderror" name="mailer_id" type="text" value="{{ old('mailer_id', $mailbox->mailer_id) }}">
                         @error('mailer_id')
                             <span class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -41,7 +41,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="mail_server">Server</label>
-                        <input class="form-control @error('mail_server') is-invalid @enderror" name="mail_server" type="text" value="{{ old('mail_server', $smtp->mail_server) }}">
+                        <input class="form-control @error('mail_server') is-invalid @enderror" name="mail_server" type="text" value="{{ old('mail_server', $mailbox->mail_server) }}">
                         @error('mail_server')
                             <span class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -49,7 +49,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="email">Email</label>
-                        <input class="form-control @error('email') is-invalid @enderror" name="email" type="text" value="{{ old('email', $smtp->email) }}">
+                        <input class="form-control @error('email') is-invalid @enderror" name="email" type="text" value="{{ old('email', $mailbox->email) }}">
                         @error('email')
                             <span class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -57,7 +57,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="password">Password</label>
-                        <input class="form-control @error('password') is-invalid @enderror" name="password" type="password" value="{{ old('password', $smtp->password) }}">
+                        <input class="form-control @error('password') is-invalid @enderror" name="password" type="password" value="{{ old('password', $mailbox->password) }}">
                         @error('password')
                             <span class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -65,7 +65,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="port">Port</label>
-                        <input class="form-control @error('port') is-invalid @enderror" name="port" type="port" value="{{ old('port', $smtp->port) }}">
+                        <input class="form-control @error('port') is-invalid @enderror" name="port" type="port" value="{{ old('port', $mailbox->port) }}">
                         @error('port')
                             <span class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -82,8 +82,16 @@
                     </div>
 
                     <div class="form-group col-md-6">
+                        <label for="smtp">SMTP</label>
+                        <select class="form-control smtp" name="smtp" title="Select Encryption Mode">
+                            <option value="">--Select--</option>
+                            <option value="0">SMTP</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
                         <label for="sender_address">Sender Address</label>
-                        <textarea class="form-control sender_address" rows="3" name="sender_address" placeholder="Enter ...">{{ old('sender_address', $smtp->sender_address) }}</textarea>
+                        <textarea class="form-control sender_address" rows="3" name="sender_address" placeholder="Enter ...">{{ old('sender_address', $mailbox->sender_address) }}</textarea>
                         @error('sender_address')
                             <span class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -91,7 +99,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="delivery_address">Delivery Address</label>
-                        <textarea class="form-control" rows="3" name="delivery_address" placeholder="Enter ...">{{ old('delivery_address', $smtp->delivery_address) }}</textarea>
+                        <textarea class="form-control" rows="3" name="delivery_address" placeholder="Enter ...">{{ old('delivery_address', $mailbox->delivery_address) }}</textarea>
                         @error('delivery_address')
                             <span class="error invalid-feedback">{{ $message }}</span>
                         @enderror
@@ -99,8 +107,8 @@
                 </div>
             </div>
             <div class="card-footer">
-                <input class="btn btn-primary" type="submit" value="{{ $smtp->id == null ? 'Save' : 'Update' }}">
-                <a href="{{ route('smtp.index') }}" class="btn btn-default">Cancel</a>
+                <input class="btn btn-primary" type="submit" value="{{ $mailbox->id == null ? 'Save' : 'Update' }}">
+                <a href="{{ route('mailbox.index') }}" class="btn btn-default">Cancel</a>
             </div>
         </form>
     </div>

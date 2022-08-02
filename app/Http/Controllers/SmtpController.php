@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Mailbox;
+use App\Models\Smtp;
 use Illuminate\Support\Facades\Auth;
 
-class MailboxController extends Controller
+class SmtpController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,21 +16,21 @@ class MailboxController extends Controller
     public function index()
     {
         if(request()->ajax()) {
-            return datatables()->of(Mailbox::select('id','mailer_id','smtp'))
+            return datatables()->of(Smtp::select('id','mailer_id'))
             ->addColumn('action', function($row){
                 $btn = '';
                 // if(Auth::user()->can('edit.smtp')){
-                    $btn = '<a href="'.route('mailbox.edit', ['mailbox' => $row->id]).'" class="btn btn-success btn-xs edit-mailbox"> <i class="fa fa-edit"></i> </a>';
+                    $btn = '<a href="'.route('smtp.edit', ['smtp' => $row->id]).'" class="btn btn-success btn-xs edit-smtp"> <i class="fa fa-edit"></i> </a>';
                 // }
-                // if(Auth::user()->can('delete.mailbox')){
-                    $btn = $btn.'<button type="submit" class="btn btn-danger btn-xs delete-mailbox" data-id="'.$row->id.'"><i class="fa fa-trash"></i></button>';
+                // if(Auth::user()->can('delete.smtp')){
+                    $btn = $btn.'<button type="submit" class="btn btn-danger btn-xs delete-smtp" data-id="'.$row->id.'"><i class="fa fa-trash"></i></button>';
                 // }
                 return $btn;
             })
             ->addIndexColumn()
             ->make(true);
         }
-        return view('mailbox.index');
+        return view('smtp.index');
     }
 
     /**
@@ -40,7 +40,7 @@ class MailboxController extends Controller
      */
     public function create()
     {
-        return view('mailbox.create', ['mailbox' => new Mailbox()]);
+        return view('smtp.create', ['smtp' => new Smtp()]);
     }
 
     /**
@@ -51,7 +51,8 @@ class MailboxController extends Controller
      */
     public function store(Request $request)
     {
-        $group = Mailbox::create([
+        // dd($request->all());
+        $group = Smtp::create([
             'mailer_id' => $request->mailer_id,
             'transport_type' => $request->transport_type,
             'mail_server' => $request->mail_server,
@@ -62,10 +63,9 @@ class MailboxController extends Controller
             'authentication_mode' => $request->authentication_mode ?? 'login',
             'sender_address' => $request->sender_address,
             'delivery_address' => $request->delivery_address,
-            'created_by' => auth()->user()->id,
-            'smtp' => $request->smtp
+            'created_by' => auth()->user()->id
         ]);
-        return redirect()->route('mailbox.index');
+        return redirect()->route('smtp.index');
     }
 
     /**
@@ -85,9 +85,9 @@ class MailboxController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mailbox $mailbox)
+    public function edit(Smtp $smtp)
     {
-        return view('mailbox.create', ['mailbox' => $mailbox]);
+        return view('smtp.create', ['smtp' => $smtp]);
     }
 
     /**
@@ -97,14 +97,14 @@ class MailboxController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mailbox $mailbox)
+    public function update(Request $request, Smtp $smtp)
     {
         // $request->validate([
         //     'name' => 'required|unique:groups,name,'.$group->id
         // ]);
-        $mailbox->fill($request->all())->save();
+        $smtp->fill($request->all())->save();
         
-        return redirect()->route('mailbox.index');
+        return redirect()->route('smtp.index');
     }
 
     /**
@@ -115,9 +115,9 @@ class MailboxController extends Controller
      */
     public function destroy(Request $request)
     {
-        $mailbox = Mailbox::find($request->id)->delete();
-        if($mailbox)
-            return response()->json(['msg' => 'Mailbox deleted successfully!']);
+        $smtp = Smtp::find($request->id)->delete();
+        if($smtp)
+            return response()->json(['msg' => 'Smtp deleted successfully!']);
 
         return response()->json(['msg' => 'Something went wrong, Please try again'],500);
     }
