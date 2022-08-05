@@ -5,9 +5,45 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Mailbox;
 use Illuminate\Support\Facades\Auth;
+use Webklex\IMAP\Facades\Client;
 
 class MailboxController extends Controller
 {
+    public function getMails()
+    {
+        $client = Client::account('default');
+
+        // $oClient = Client::account('default'); // defined in config/imap.php
+        $client->connect();
+
+        // get all unseen messages from folder INBOX
+        $folders = $client->getFolders();
+        // $aMessage = $folders->query()->all()->get();
+
+
+        // dd($aMessage);
+        foreach($folders as $folder){
+            //Get all Messages of the current Mailbox $folder
+            /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
+            dd($folder->query()->all()->get());
+            $messages = $folder->messages()->all()->get();
+            
+            /** @var \Webklex\PHPIMAP\Message $message */
+            foreach($messages as $message){
+                echo $message->getSubject().'<br />';
+                echo 'Attachments: '.$message->getAttachments()->count().'<br />';
+                echo $message->getHTMLBody();
+                
+                //Move the current Message to 'INBOX.read'
+                if($message->move('INBOX.read') == true){
+                    echo 'Message has ben moved';
+                }else{
+                    echo 'Message could not be moved';
+                }
+                exit;
+            }
+        }
+    }
     /**
      * Display a listing of the resource.
      *
