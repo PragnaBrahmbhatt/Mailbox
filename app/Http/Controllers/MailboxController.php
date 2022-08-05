@@ -9,6 +9,25 @@ use Webklex\IMAP\Facades\Client;
 
 class MailboxController extends Controller
 {
+    /**
+     * MAIL_MAILER=smtp
+        // MAIL_HOST=smtp.gmail.com
+        // MAIL_PORT=587
+        // MAIL_USERNAME=
+        // MAIL_PASSWORD=
+        // MAIL_ENCRYPTION=TLS
+        // MAIL_FROM_ADDRESS=pragna@gmail.com
+        // MAIL_FROM_NAME="${APP_NAME}"
+
+        // IMAP_HOST=imap.gmail.com
+        // IMAP_PORT=993
+        // IMAP_ENCRYPTION=ssl
+        // IMAP_VALIDATE_CERT=true
+        // IMAP_USERNAME=
+        // IMAP_PASSWORD=
+        // IMAP_DEFAULT_ACCOUNT=default
+        // IMAP_PROTOCOL=imap
+     */
     public function getMails()
     {
         $client = Client::account('default');
